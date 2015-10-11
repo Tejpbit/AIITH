@@ -13,20 +13,111 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="AmIInTheHub" customModuleProvider="target">
             <connections>
+                <outlet property="cidTextField" destination="rGR-yA-lcv" id="Nvs-zP-lYj"/>
+                <outlet property="intervalSlider" destination="kQa-bU-7lK" id="y5t-HG-SUy"/>
+                <outlet property="intervalTextField" destination="ZTP-EE-dhX" id="WiO-Ut-0jQ"/>
+                <outlet property="intervalTimer" destination="kQa-bU-7lK" id="3Q3-Y4-Kss"/>
+                <outlet property="optionsWindow" destination="ry9-aS-bkW" id="E3O-7y-i2e"/>
                 <outlet property="statusMenu" destination="kdx-o1-GZz" id="DvL-Zu-rwH"/>
+                <outlet property="updateIntervalStepper" destination="07C-yc-ejq" id="8Ry-UV-o09"/>
+                <outlet property="updateIntervalTextField" destination="ZTP-EE-dhX" id="Bo3-jP-P8O"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu id="kdx-o1-GZz">
             <items>
-                <menuItem title="Quit" id="EjE-yK-6F1">
+                <menuItem title="Config..." keyEquivalent="c" id="Knw-tQ-K4d">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="configClicked:" target="Voe-Tx-rLC" id="VxP-QO-0jo"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Quit" keyEquivalent="q" id="EjE-yK-6F1">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="quitClicked:" target="Voe-Tx-rLC" id="0Jj-ku-D6K"/>
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="794.5" y="208.5"/>
+            <point key="canvasLocation" x="619.5" y="-20.5"/>
         </menu>
+        <window title="AIITH" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="ry9-aS-bkW">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="109" y="131" width="319" height="129"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" id="mux-Y8-haa">
+                <rect key="frame" x="0.0" y="0.0" width="319" height="129"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jkw-pX-xcd">
+                        <rect key="frame" x="52" y="92" width="101" height="17"/>
+                        <animations/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="CID:" id="rvf-26-6RX">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rGR-yA-lcv">
+                        <rect key="frame" x="159" y="87" width="96" height="22"/>
+                        <animations/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="CID" drawsBackground="YES" id="jLP-cm-YIi">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wiV-MA-bPv">
+                        <rect key="frame" x="18" y="52" width="135" height="17"/>
+                        <animations/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Update interval (min):" id="9ig-UI-v1j">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZTP-EE-dhX">
+                        <rect key="frame" x="259" y="49" width="40" height="22"/>
+                        <animations/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="5" drawsBackground="YES" id="0M4-Vc-DT5">
+                            <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="2pK-Vk-Zg9"/>
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H3z-w0-oaY">
+                        <rect key="frame" x="146" y="13" width="120" height="32"/>
+                        <animations/>
+                        <buttonCell key="cell" type="push" title="Save &amp; Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="X4r-Og-n4w">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="performClose:" target="ry9-aS-bkW" id="qsc-1f-KN8"/>
+                        </connections>
+                    </button>
+                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kQa-bU-7lK">
+                        <rect key="frame" x="157" y="50" width="96" height="20"/>
+                        <animations/>
+                        <sliderCell key="cell" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="Pn6-Yh-uCf"/>
+                        <connections>
+                            <action selector="sliderUpdate:" target="Voe-Tx-rLC" id="dOK-3q-E0b"/>
+                        </connections>
+                    </slider>
+                    <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="07C-yc-ejq">
+                        <rect key="frame" x="270" y="17" width="19" height="27"/>
+                        <animations/>
+                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="dUB-yy-2RG"/>
+                        <connections>
+                            <action selector="intervalStepperClicked:" target="Voe-Tx-rLC" id="Zlo-d5-cbw"/>
+                        </connections>
+                    </stepper>
+                </subviews>
+                <animations/>
+            </view>
+            <point key="canvasLocation" x="862.5" y="150.5"/>
+        </window>
     </objects>
 </document>

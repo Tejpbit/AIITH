@@ -10,46 +10,76 @@ import Cocoa
 import Foundation
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, NSURLConnectionDataDelegate {
-    
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSURLConnectionDataDelegate {
+    @IBOutlet weak var optionsWindow: NSWindow!
     @IBOutlet weak var statusMenu: NSMenu!
-    let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
-
+    @IBOutlet weak var cidTextField: NSTextField!
+    @IBOutlet weak var intervalTextField: NSTextField!
+    @IBOutlet weak var intervalSlider: NSSlider!
+    
+    
+    let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
+    private var resultData: NSMutableData!
     let formatter = NSDateComponentsFormatter()
+    let defaults = NSUserDefaults.standardUserDefaults()
+    let CID_KEY = "CID"
+    let INTERVAL_KEY = "INTERVAL"
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
-        statusItem.title = "asd"
+        
+        defaults.registerDefaults([CID_KEY: "andresa", INTERVAL_KEY: 300])
+        intervalSlider.maxValue = 3600
+        intervalSlider.minValue = 300
+        intervalSlider.doubleValue = defaults.doubleForKey(INTERVAL_KEY)
+        intervalTextField.integerValue = intervalSlider.integerValue/60
+        cidTextField.stringValue = defaults.stringForKey(CID_KEY)!
+        
+        optionsWindow.delegate = self
+        optionsWindow.center()
+        
+        
+        statusItem.title = "AIITH"
+        statusItem.menu = statusMenu
         resultData = NSMutableData()
         formatter.unitsStyle = .Positional
-        
-        
-        //refreshClock()
-        
-        //let myTimer = NSTimer(timeInterval: 2, target: self, selector: "refreshClock:", userInfo: nil, repeats: true)
-        //NSRunLoop.currentRunLoop().addTimer(myTimer, forMode: NSRunLoopCommonModes)
-        var helloWorldTimer = NSTimer.scheduledTimerWithTimeInterval(300.0, target: self, selector: "refreshClock", userInfo: nil, repeats: true)
-    }
-    
-    func refreshClock() {
-        let urlPath: String = "https://hubbit.chalmers.it/stats/andresa.json"
-        let url: NSURL = NSURL(string: urlPath)!
-        let request: NSURLRequest = NSURLRequest(URL: url)
-        let connection: NSURLConnection = NSURLConnection(request: request, delegate: self, startImmediately: true)!
-        connection.start()
+        refreshClock()
+        let updateinterval = defaults.doubleForKey(INTERVAL_KEY)
+        NSTimer.scheduledTimerWithTimeInterval(updateinterval, target: self, selector: "refreshClock", userInfo: nil, repeats: true)
     }
     
     func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
         NSApplication.sharedApplication().terminate(self)
     }
     
-    
-    @IBAction func quitClicked(sender: NSMenuItem) {
-        exit(0)
+    func refreshClock() {
+        if let cid = defaults.stringForKey(CID_KEY) {
+            let urlPath: String = "https://hubbit.chalmers.it/stats/\(cid).json"
+            let url: NSURL = NSURL(string: urlPath)!
+            let request: NSURLRequest = NSURLRequest(URL: url)
+            let connection: NSURLConnection = NSURLConnection(request: request, delegate: self, startImmediately: true)!
+            connection.start()
+        }
     }
     
-    private var resultData: NSMutableData!
+    func windowWillClose(notification: NSNotification) {
+        defaults.setDouble(Double(intervalSlider.integerValue), forKey: INTERVAL_KEY)
+        defaults.setObject(cidTextField.stringValue, forKey: CID_KEY)
+        refreshClock()
+    }
+
+    @IBAction func configClicked(sender: NSMenuItem) {
+        optionsWindow.makeKeyAndOrderFront(sender)
+        optionsWindow.orderFrontRegardless()
+    }
+    
+    @IBAction func sliderUpdate(sender: NSSlider) {
+        intervalTextField.integerValue = sender.integerValue/60
+    }
+    
+    @IBAction func quitClicked(sender: NSMenuItem) {
+        NSApplication.sharedApplication().terminate(self)
+    }
     
     func connection(connection: NSURLConnection, didReceiveData data: NSData) {
         self.resultData.appendData(data)
@@ -66,19 +96,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSURLConnectionDataDelegate 
                     components.hour = 0
                     components.minute = time/60
                     
-                    print(formatter.stringFromDateComponents(components))
                     statusItem.title = formatter.stringFromDateComponents(components)
                 } else {
-                    statusItem.title = "BadConvert"
-                    print("BadConvert")
+                    statusItem.title = "BadConvertToInt"
                 }
             } else {
-                statusItem.title = "NoDuration"
-                print("NoDuration")
+                statusItem.title = "NoDurationInJson"
             }
             
         } catch  {
-            
+            statusItem.title = "CaughtError"
         }
         self.resultData.setData(NSData())
     }
