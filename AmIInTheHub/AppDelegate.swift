@@ -28,7 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSURLConnectionDataDelegate 
         
         //let myTimer = NSTimer(timeInterval: 2, target: self, selector: "refreshClock:", userInfo: nil, repeats: true)
         //NSRunLoop.currentRunLoop().addTimer(myTimer, forMode: NSRunLoopCommonModes)
-        var helloWorldTimer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: "refreshClock", userInfo: nil, repeats: true)
+        var helloWorldTimer = NSTimer.scheduledTimerWithTimeInterval(300.0, target: self, selector: "refreshClock", userInfo: nil, repeats: true)
     }
     
     func refreshClock() {
