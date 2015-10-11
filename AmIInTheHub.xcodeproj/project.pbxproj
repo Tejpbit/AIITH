@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		30E454D91BC9A92500B3F6B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E454D81BC9A92500B3F6B7 /* AppDelegate.swift */; };
 		30E454DB1BC9A92500B3F6B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30E454DA1BC9A92500B3F6B7 /* Assets.xcassets */; };
-		30E454DE1BC9A92500B3F6B7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30E454DC1BC9A92500B3F6B7 /* MainMenu.xib */; };
+		30E454DE1BC9A92500B3F6B7 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30E454DC1BC9A92500B3F6B7 /* MainMenu.xib */; settings = {ASSET_TAGS = (); }; };
 		30E454E91BC9A92500B3F6B7 /* AmIInTheHubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E454E81BC9A92500B3F6B7 /* AmIInTheHubTests.swift */; };
 		30E454F41BC9A92500B3F6B7 /* AmIInTheHubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E454F31BC9A92500B3F6B7 /* AmIInTheHubUITests.swift */; };
 /* End PBXBuildFile section */
@@ -181,6 +181,9 @@
 		30E454CD1BC9A92400B3F6B7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					menu,
+				);
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "André Samuelsson";
 				TargetAttributes = {
@@ -470,6 +473,7 @@
 				30E454FA1BC9A92500B3F6B7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		30E454FB1BC9A92500B3F6B7 /* Build configuration list for PBXNativeTarget "AmIInTheHubTests" */ = {
 			isa = XCConfigurationList;
@@ -478,6 +482,7 @@
 				30E454FD1BC9A92500B3F6B7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		30E454FE1BC9A92500B3F6B7 /* Build configuration list for PBXNativeTarget "AmIInTheHubUITests" */ = {
 			isa = XCConfigurationList;
@@ -486,6 +491,7 @@
 				30E455001BC9A92500B3F6B7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
