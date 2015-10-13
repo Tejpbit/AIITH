@@ -19,7 +19,6 @@
                 <outlet property="intervalTimer" destination="kQa-bU-7lK" id="3Q3-Y4-Kss"/>
                 <outlet property="optionsWindow" destination="ry9-aS-bkW" id="E3O-7y-i2e"/>
                 <outlet property="statusMenu" destination="kdx-o1-GZz" id="DvL-Zu-rwH"/>
-                <outlet property="updateIntervalStepper" destination="07C-yc-ejq" id="8Ry-UV-o09"/>
                 <outlet property="updateIntervalTextField" destination="ZTP-EE-dhX" id="Bo3-jP-P8O"/>
             </connections>
         </customObject>
@@ -106,14 +105,6 @@
                             <action selector="sliderUpdate:" target="Voe-Tx-rLC" id="dOK-3q-E0b"/>
                         </connections>
                     </slider>
-                    <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="07C-yc-ejq">
-                        <rect key="frame" x="270" y="17" width="19" height="27"/>
-                        <animations/>
-                        <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="dUB-yy-2RG"/>
-                        <connections>
-                            <action selector="intervalStepperClicked:" target="Voe-Tx-rLC" id="Zlo-d5-cbw"/>
-                        </connections>
-                    </stepper>
                 </subviews>
                 <animations/>
             </view>

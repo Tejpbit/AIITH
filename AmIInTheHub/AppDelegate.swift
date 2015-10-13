@@ -88,26 +88,59 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSURLConne
     func connectionDidFinishLoading(connection: NSURLConnection) {
         do {
             let jsonResult = try NSJSONSerialization.JSONObjectWithData(resultData!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-            if let duration = jsonResult["last_session_duration"] {
-                if let time = duration as? Int {
+            
+            if let lastSession = jsonResult["last_session"] {
+                if let lastSessionString = lastSession as? String {
                     
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'.000+02:00'"
                     
-                    let components = NSDateComponents()
-                    components.hour = 0
-                    components.minute = time/60
+                    let date = dateFormatter.dateFromString(lastSessionString)
                     
-                    statusItem.title = formatter.stringFromDateComponents(components)
-                } else {
-                    statusItem.title = "BadConvertToInt"
+                    // Get timedif NSDate.timeIntervalSinceNow. lyckas inte på date. varför? unwrappa i en ifsats...
+                    let currentDate = NSDate()
+                    if currentDate.compare(date!) == .OrderedAscending {
+                        displayLastSessionTime(jsonResult)
+                    } else {
+                        
+                        displayTimeSinceLastSession(date!)
+
+                    }
                 }
-            } else {
-                statusItem.title = "NoDurationInJson"
             }
+            
+            
+            
+            
             
         } catch  {
             statusItem.title = "CaughtError"
         }
         self.resultData.setData(NSData())
+    }
+    
+    func displayLastSessionTime(jsonResult: NSDictionary) {
+        if let duration = jsonResult["last_session_duration"] {
+            if let time = duration as? Int {
+                
+                
+                let components = NSDateComponents()
+                components.hour = 0
+                components.minute = time/60
+                
+                statusItem.title = formatter.stringFromDateComponents(components)
+            } else {
+                statusItem.title = "BadConvertToInt"
+            }
+        } else {
+            statusItem.title = "NoDurationInJson"
+        }
+    }
+    
+    func displayTimeSinceLastSession(lastSession: NSDate) {
+        let format = NSDateFormatter()
+        format.dateFormat = "'Last: 'HH:mm"
+        statusItem.title = format.stringFromDate(lastSession)
     }
 }
 
