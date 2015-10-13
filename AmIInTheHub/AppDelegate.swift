@@ -14,8 +14,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSURLConne
     @IBOutlet weak var optionsWindow: NSWindow!
     @IBOutlet weak var statusMenu: NSMenu!
     @IBOutlet weak var cidTextField: NSTextField!
-    @IBOutlet weak var intervalTextField: NSTextField!
-    @IBOutlet weak var intervalSlider: NSSlider!
     
     
     let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
@@ -23,16 +21,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSURLConne
     let formatter = NSDateComponentsFormatter()
     let defaults = NSUserDefaults.standardUserDefaults()
     let CID_KEY = "CID"
-    let INTERVAL_KEY = "INTERVAL"
+    let FIRST_START_KEY = "FIRST_START"
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
         
-        defaults.registerDefaults([CID_KEY: "andresa", INTERVAL_KEY: 300])
-        intervalSlider.maxValue = 3600
-        intervalSlider.minValue = 300
-        intervalSlider.doubleValue = defaults.doubleForKey(INTERVAL_KEY)
-        intervalTextField.integerValue = intervalSlider.integerValue/60
+        defaults.registerDefaults([CID_KEY: "", FIRST_START_KEY: true])
         cidTextField.stringValue = defaults.stringForKey(CID_KEY)!
         
         optionsWindow.delegate = self
@@ -44,8 +37,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSURLConne
         resultData = NSMutableData()
         formatter.unitsStyle = .Positional
         refreshClock()
-        let updateinterval = defaults.doubleForKey(INTERVAL_KEY)
-        NSTimer.scheduledTimerWithTimeInterval(updateinterval, target: self, selector: "refreshClock", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(300, target: self, selector: "refreshClock", userInfo: nil, repeats: true)
+        
+        NSApplication.sharedApplication().activateIgnoringOtherApps(true)
+        
+        if defaults.boolForKey(FIRST_START_KEY) {
+            openConfigWindow()
+            defaults.setBool(false, forKey: FIRST_START_KEY)
+        }
     }
     
     func applicationWillTerminate(aNotification: NSNotification) {
@@ -63,18 +62,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSURLConne
     }
     
     func windowWillClose(notification: NSNotification) {
-        defaults.setDouble(Double(intervalSlider.integerValue), forKey: INTERVAL_KEY)
         defaults.setObject(cidTextField.stringValue, forKey: CID_KEY)
         refreshClock()
     }
 
     @IBAction func configClicked(sender: NSMenuItem) {
-        optionsWindow.makeKeyAndOrderFront(sender)
-        optionsWindow.orderFrontRegardless()
+        openConfigWindow()
     }
     
-    @IBAction func sliderUpdate(sender: NSSlider) {
-        intervalTextField.integerValue = sender.integerValue/60
+    func openConfigWindow() {
+        optionsWindow.makeKeyAndOrderFront(nil)
+        //optionsWindow.orderFrontRegardless()
+        optionsWindow.orderFront(nil)
     }
     
     @IBAction func quitClicked(sender: NSMenuItem) {
@@ -97,7 +96,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSURLConne
                     
                     let date = dateFormatter.dateFromString(lastSessionString)
                     
-                    // Get timedif NSDate.timeIntervalSinceNow. lyckas inte på date. varför? unwrappa i en ifsats...
                     let currentDate = NSDate()
                     if currentDate.compare(date!) == .OrderedAscending {
                         displayLastSessionTime(jsonResult)
